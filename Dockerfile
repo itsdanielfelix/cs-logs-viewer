@@ -31,4 +31,4 @@ RUN composer install --no-interaction --prefer-dist --optimize-autoloader --no-d
     && chown -R webuser:webgroup /var/www/html \
     && crontab /etc/cron.d/scheduler
 
-VOLUME /config
+VOLUME /var/www/html/storage/logs/commusoft
