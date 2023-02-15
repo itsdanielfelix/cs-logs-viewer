@@ -70,6 +70,8 @@ return [
 
     'include_files' => [
         'v4/*.log',
+        'v4-frontend/*.log',
+        'v4-webservice/*.log',
         'v4-01/*.log',
         'v4-02/*.log',
         'v4-03/*.log',
