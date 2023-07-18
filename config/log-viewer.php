@@ -52,14 +52,77 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Log Viewer route middleware.
+    | Log Viewer time zone.
     |--------------------------------------------------------------------------
-    | The middleware should enable session and cookies support in order for the Log Viewer to work.
-    | The 'web' middleware will be applied automatically if empty.
+    | The time zone in which to display the times in the UI. Defaults to
+    | the application's timezone defined in config/app.php.
     |
     */
 
-    'middleware' => ['web'],
+    'timezone' => null,
+
+    /*
+    |--------------------------------------------------------------------------
+    | Log Viewer route middleware.
+    |--------------------------------------------------------------------------
+    | Optional middleware to use when loading the initial Log Viewer page.
+    |
+    */
+
+    'middleware' => [
+        'web',
+        \Opcodes\LogViewer\Http\Middleware\AuthorizeLogViewer::class,
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Log Viewer API middleware.
+    |--------------------------------------------------------------------------
+    | Optional middleware to use on every API request. The same API is also
+    | used from within the Log Viewer user interface.
+    |
+    */
+
+    'api_middleware' => [
+        \Opcodes\LogViewer\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
+        \Opcodes\LogViewer\Http\Middleware\AuthorizeLogViewer::class,
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Log Viewer Remote hosts.
+    |--------------------------------------------------------------------------
+    | Log Viewer supports viewing Laravel logs from remote hosts. They must
+    | be running Log Viewer as well. Below you can define the hosts you
+    | would like to show in this Log Viewer instance.
+    |
+    */
+
+    'hosts' => [
+        'local' => [
+            'name' => ucfirst(env('APP_ENV', 'local')),
+        ],
+
+        // 'staging' => [
+        //     'name' => 'Staging',
+        //     'host' => 'https://staging.example.com/log-viewer',
+        //     'auth' => [      // Example of HTTP Basic auth
+        //         'username' => 'username',
+        //         'password' => 'password',
+        //     ],
+        // ],
+        //
+        // 'production' => [
+        //     'name' => 'Production',
+        //     'host' => 'https://example.com/log-viewer',
+        //     'auth' => [      // Example of Bearer token auth
+        //         'token' => env('LOG_VIEWER_PRODUCTION_TOKEN'),
+        //     ],
+        //     'headers' => [
+        //         'X-Foo' => 'Bar',
+        //     ],
+        // ],
+    ],
 
     /*
     |--------------------------------------------------------------------------
@@ -69,99 +132,9 @@ return [
     */
 
     'include_files' => [
-        'v4/*.log',
-        'v4-frontend/*.log',
-        'v4-webservice/*.log',
-        'v4-01/*.log',
-        'v4-02/*.log',
-        'v4-03/*.log',
-        'v4-04/*.log',
-        'v4-05/*.log',
-        'v4-dev/*.log',
-        'v4-dev-01/*.log',
-        'v4-dev-02/*.log',
-        'v4-dev-03/*.log',
-        'v4-dev-04/*.log',
-        'v4-dev-05/*.log',
-        'v4-stage/*.log',
-        'v4-stage-01/*.log',
-        'v4-stage-02/*.log',
-        'v4-stage-03/*.log',
-        'v4-stage-04/*.log',
-        'v4-stage-05/*.log',
-        'v4-stage2/*.log',
-        'v4-stage2-01/*.log',
-        'v4-stage2-02/*.log',
-        'v4-stage2-03/*.log',
-        'v4-stage2-04/*.log',
-        'v4-stage2-05/*.log',
-        'v4-prod/*.log',
-        'v4-prod-01/*.log',
-        'v4-prod-02/*.log',
-        'v4-prod-03/*.log',
-        'v4-prod-04/*.log',
-        'v4-prod-05/*.log',
-        'v5-contract/*.log',
-        'v5-contract-01/*.log',
-        'v5-contract-02/*.log',
-        'v5-contract-03/*.log',
-        'v5-contract-04/*.log',
-        'v5-contract-05/*.log',
-        'v5-contract-dev/*.log',
-        'v5-contract-dev-01/*.log',
-        'v5-contract-dev-02/*.log',
-        'v5-contract-dev-03/*.log',
-        'v5-contract-dev-04/*.log',
-        'v5-contract-dev-05/*.log',
-        'v5-contract-stage/*.log',
-        'v5-contract-stage-01/*.log',
-        'v5-contract-stage-02/*.log',
-        'v5-contract-stage-03/*.log',
-        'v5-contract-stage-04/*.log',
-        'v5-contract-stage-05/*.log',
-        'v5-contract-stage2/*.log',
-        'v5-contract-stage2-01/*.log',
-        'v5-contract-stage2-02/*.log',
-        'v5-contract-stage2-03/*.log',
-        'v5-contract-stage2-04/*.log',
-        'v5-contract-stage2-05/*.log',
-        'v5-contract-prod/*.log',
-        'v5-contract-prod-01/*.log',
-        'v5-contract-prod-02/*.log',
-        'v5-contract-prod-03/*.log',
-        'v5-contract-prod-04/*.log',
-        'v5-contract-prod-05/*.log',
-        'v5-reporting/*.log',
-        'v5-reporting-01/*.log',
-        'v5-reporting-02/*.log',
-        'v5-reporting-03/*.log',
-        'v5-reporting-04/*.log',
-        'v5-reporting-05/*.log',
-        'v5-reporting-dev/*.log',
-        'v5-reporting-dev-01/*.log',
-        'v5-reporting-dev-02/*.log',
-        'v5-reporting-dev-03/*.log',
-        'v5-reporting-dev-04/*.log',
-        'v5-reporting-dev-05/*.log',
-        'v5-reporting-stage/*.log',
-        'v5-reporting-stage-01/*.log',
-        'v5-reporting-stage-02/*.log',
-        'v5-reporting-stage-03/*.log',
-        'v5-reporting-stage-04/*.log',
-        'v5-reporting-stage-05/*.log',
-        'v5-reporting-stage2/*.log',
-        'v5-reporting-stage2-01/*.log',
-        'v5-reporting-stage2-02/*.log',
-        'v5-reporting-stage2-03/*.log',
-        'v5-reporting-stage2-04/*.log',
-        'v5-reporting-stage2-05/*.log',
-        'v5-reporting-prod/*.log',
-        'v5-reporting-prod-01/*.log',
-        'v5-reporting-prod-02/*.log',
-        'v5-reporting-prod-03/*.log',
-        'v5-reporting-prod-04/*.log',
-        'v5-reporting-prod-05/*.log',
-        '*.log'
+        '*.log',
+        '**/*.log',
+        // '/absolute/paths/supported',
     ],
 
     /*
@@ -173,7 +146,7 @@ return [
     */
 
     'exclude_files' => [
-        //'my_secret.log'
+        // 'my_secret.log'
     ],
 
     /*
@@ -222,18 +195,6 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Eager-scan log files
-    |--------------------------------------------------------------------------
-    | Whether to eagerly scan all log files configured with the Log Viewer.
-    | Scanning a log file will create an index for it, which will
-    | speed up further navigation of that log file.
-    |
-    */
-
-    'eager_scan' => env('LOG_VIEWER_EAGER_SCAN', true),
-
-    /*
-    |--------------------------------------------------------------------------
     | Cache driver
     |--------------------------------------------------------------------------
     | Cache driver to use for storing the log indices. Indices are used to speed up
@@ -251,5 +212,5 @@ return [
     |
     */
 
-    'lazy_scan_chunk_size_in_mb' => 200,
+    'lazy_scan_chunk_size_in_mb' => 50,
 ];
