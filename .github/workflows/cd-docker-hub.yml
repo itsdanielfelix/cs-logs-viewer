@@ -1,10 +1,9 @@
 name: Build and push Docker image to Docker Hub
 
 on:
-  workflow_dispatch:
   push:
     tags:
-      - '*'
+      - 'v*'
 
 env:
   REGISTRY: danielfelix
@@ -42,9 +41,12 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-          flavor: |
-            latest=${{ github.ref == 'refs/heads/main' }}
-            ${{ steps.get_version.outputs.VERSION }}
+          tags: |
+            type=ref,event=branch
+            type=ref,event=tag
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=semver,pattern={{major}}
 
       - name: Build and push image to Docker Hub
         uses: docker/build-push-action@v3
