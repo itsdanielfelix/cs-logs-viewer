@@ -16,7 +16,7 @@ services:
             - PUID=1000
             - PGID=1000
         volumes:
-            - './commusoft-logs:/var/www/html/storage/logs/commusoft'
+            - './logs:/var/www/html/storage/logs'
         image: 'danielfelix/cs-logs-viewer:latest'
         restart: unless-stopped
 ```
